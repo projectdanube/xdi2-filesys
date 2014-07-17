@@ -168,6 +168,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 			if (file.isDirectory()) {
 
+				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": Directory: " + file.getAbsolutePath());
+				
 				XdiEntityMember dirXdiEntityMember = dirXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidArcXri(false));
 				dirXdiEntityMember.getXdiAttribute(XRI_S_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
 				dirXdiEntityMember.getXdiAttribute(XRI_S_AS_SIZE, true).getXdiValue(true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
@@ -176,6 +178,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 			}
 
 			if (file.isFile()) {
+
+				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": File: " + file.getAbsolutePath());
 
 				XdiEntityMember fileXdiEntityMember = fileXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidArcXri(false));
 				fileXdiEntityMember.getXdiAttribute(XRI_S_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
