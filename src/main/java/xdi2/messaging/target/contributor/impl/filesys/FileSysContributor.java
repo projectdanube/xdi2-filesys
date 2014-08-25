@@ -11,8 +11,8 @@ import xdi2.core.features.nodetypes.XdiAbstractMemberUnordered;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
 import xdi2.core.features.nodetypes.XdiEntityMember;
+import xdi2.core.syntax.XDIAddress;
 import xdi2.core.util.GraphUtil;
-import xdi2.core.xri3.XDI3Segment;
 import xdi2.messaging.GetOperation;
 import xdi2.messaging.MessageResult;
 import xdi2.messaging.context.ExecutionContext;
@@ -24,7 +24,7 @@ import xdi2.messaging.target.contributor.ContributorMount;
 import xdi2.messaging.target.contributor.ContributorResult;
 import xdi2.messaging.target.impl.graph.GraphMessagingTarget;
 
-@ContributorMount(contributorXris={"(#test)"})
+@ContributorMount(contributorAddresses={"(#test)"})
 public class FileSysContributor extends AbstractContributor implements Prototype<FileSysContributor> {
 
 	private static final Logger log = LoggerFactory.getLogger(FileSysContributor.class);
@@ -32,10 +32,10 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 	private static final String DEFAULT_BASE_PATH = ".";
 	private static final String DEFAULT_GRAPH_PATH = null;
 
-	private static final XDI3Segment XRI_S_EC_DIR = XDI3Segment.create("[#dir]");
-	private static final XDI3Segment XRI_S_EC_FILE = XDI3Segment.create("[#file]");
-	private static final XDI3Segment XRI_S_AS_NAME = XDI3Segment.create("<#name>");
-	private static final XDI3Segment XRI_S_AS_SIZE = XDI3Segment.create("<#size>");
+	private static final XDIAddress XDI_ADD_EC_DIR = XDIAddress.create("[#dir]");
+	private static final XDIAddress XDI_ADD_EC_FILE = XDIAddress.create("[#file]");
+	private static final XDIAddress XDI_ADD_AS_NAME = XDIAddress.create("<#name>");
+	private static final XDIAddress XDI_ADD_AS_SIZE = XDIAddress.create("<#size>");
 
 	private String basePath;
 	private String graphPath;
@@ -88,7 +88,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 		if (this.getGraphPath() == null && messagingTarget instanceof GraphMessagingTarget) {
 
-			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXri(((GraphMessagingTarget) messagingTarget).getGraph()).toString(), "UTF-8");
+			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXDIAddress(((GraphMessagingTarget) messagingTarget).getGraph()).toString(), "UTF-8");
 			this.setGraphPath(this.getBasePath() + relativeGraphPath);
 		}
 
@@ -99,7 +99,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 	 * Sub-Contributors
 	 */
 
-	@ContributorMount(contributorXris={"#dir"})
+	@ContributorMount(contributorAddresses={"#dir"})
 	private class FileSysDirContributor extends AbstractContributor {
 
 		private FileSysDirContributor() {
@@ -110,10 +110,10 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 
 		@Override
-		public ContributorResult executeGetOnAddress(XDI3Segment[] contributorXris, XDI3Segment contributorsXri, XDI3Segment relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
+		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsXri, XDIAddress relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
 
-			XDI3Segment fileSysContextXri = contributorXris[contributorXris.length - 2];
-			XDI3Segment fileSysDirContextXri = contributorXris[contributorXris.length - 1];
+			XDIAddress fileSysContextXri = contributorAddresses[contributorAddresses.length - 2];
+			XDIAddress fileSysDirContextXri = contributorAddresses[contributorAddresses.length - 1];
 
 			log.debug("fileSysContextXri: " + fileSysContextXri + ", fileSysDirContextXri: " + fileSysDirContextXri);
 
@@ -131,7 +131,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 	}
 
-	@ContributorMount(contributorXris={"{}"})
+	@ContributorMount(contributorAddresses={"{}"})
 	private class FileSysOtherContributor extends AbstractContributor {
 
 		private FileSysOtherContributor() {
@@ -140,10 +140,10 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 
 		@Override
-		public ContributorResult executeGetOnAddress(XDI3Segment[] contributorXris, XDI3Segment contributorsXri, XDI3Segment relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
+		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsXri, XDIAddress relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
 
-			XDI3Segment fileSysContextXri = contributorXris[contributorXris.length - 2];
-			XDI3Segment fileSysDirContextXri = contributorXris[contributorXris.length - 1];
+			XDIAddress fileSysContextXri = contributorAddresses[contributorAddresses.length - 2];
+			XDIAddress fileSysDirContextXri = contributorAddresses[contributorAddresses.length - 1];
 
 			log.debug("fileSysContextXri: " + fileSysContextXri + ", fileSysDirContextXri: " + fileSysDirContextXri);
 
@@ -161,8 +161,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 	private static void mapDir(File dir, XdiEntity xdiEntity) {
 
-		XdiEntityCollection dirXdiEntityCollection = xdiEntity.getXdiEntityCollection(XRI_S_EC_DIR, true);
-		XdiEntityCollection fileXdiEntityCollection = xdiEntity.getXdiEntityCollection(XRI_S_EC_FILE, true);
+		XdiEntityCollection dirXdiEntityCollection = xdiEntity.getXdiEntityCollection(XDI_ADD_EC_DIR, true);
+		XdiEntityCollection fileXdiEntityCollection = xdiEntity.getXdiEntityCollection(XDI_ADD_EC_FILE, true);
 
 		for (File file : dir.listFiles()) {
 
@@ -170,9 +170,9 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": Directory: " + file.getAbsolutePath());
 				
-				XdiEntityMember dirXdiEntityMember = dirXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidArcXri(false));
-				dirXdiEntityMember.getXdiAttribute(XRI_S_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
-				dirXdiEntityMember.getXdiAttribute(XRI_S_AS_SIZE, true).getXdiValue(true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
+				XdiEntityMember dirXdiEntityMember = dirXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidXDIArc(XdiEntityCollection.class));
+				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
+				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).getXdiValue(true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
 
 				mapDir(file, dirXdiEntityMember);
 			}
@@ -181,9 +181,9 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": File: " + file.getAbsolutePath());
 
-				XdiEntityMember fileXdiEntityMember = fileXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidArcXri(false));
-				fileXdiEntityMember.getXdiAttribute(XRI_S_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
-				fileXdiEntityMember.getXdiAttribute(XRI_S_AS_SIZE, true).getXdiValue(true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
+				XdiEntityMember fileXdiEntityMember = fileXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidXDIArc(XdiEntityCollection.class));
+				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).getXdiValue(true).setLiteralString(file.getName());
+				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).getXdiValue(true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
 			}
 		}
 	}
