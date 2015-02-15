@@ -24,7 +24,7 @@ import xdi2.messaging.target.contributor.ContributorMount;
 import xdi2.messaging.target.contributor.ContributorResult;
 import xdi2.messaging.target.impl.graph.GraphMessagingTarget;
 
-@ContributorMount(contributorAddresses={"(#test)"})
+@ContributorMount(contributorXDIAddresses={"(#test)"})
 public class FileSysContributor extends AbstractContributor implements Prototype<FileSysContributor> {
 
 	private static final Logger log = LoggerFactory.getLogger(FileSysContributor.class);
@@ -99,7 +99,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 	 * Sub-Contributors
 	 */
 
-	@ContributorMount(contributorAddresses={"#dir"})
+	@ContributorMount(contributorXDIAddresses={"#dir"})
 	private class FileSysDirContributor extends AbstractContributor {
 
 		private FileSysDirContributor() {
@@ -131,7 +131,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 	}
 
-	@ContributorMount(contributorAddresses={"{}"})
+	@ContributorMount(contributorXDIAddresses={"{}"})
 	private class FileSysOtherContributor extends AbstractContributor {
 
 		private FileSysOtherContributor() {
