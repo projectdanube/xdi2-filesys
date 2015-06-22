@@ -7,11 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xdi2.core.features.nodetypes.XdiAbstractEntity;
-import xdi2.core.features.nodetypes.XdiAbstractMemberUnordered;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
-import xdi2.core.features.nodetypes.XdiEntityMember;
+import xdi2.core.features.nodetypes.XdiEntityInstance;
 import xdi2.core.syntax.XDIAddress;
+import xdi2.core.syntax.XDIArc;
 import xdi2.core.util.GraphUtil;
 import xdi2.messaging.GetOperation;
 import xdi2.messaging.MessageResult;
@@ -169,8 +169,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 			if (file.isDirectory()) {
 
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": Directory: " + file.getAbsolutePath());
-				
-				XdiEntityMember dirXdiEntityMember = dirXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidXDIArc(XdiEntityCollection.class));
+
+				XdiEntityInstance dirXdiEntityMember = dirXdiEntityCollection.setXdiInstanceUnordered(true, false, XDIArc.literalFromRandomUuid());
 				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralDataString(file.getName());
 				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralDataNumber(Double.valueOf(file.getTotalSpace()));
 
@@ -181,7 +181,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": File: " + file.getAbsolutePath());
 
-				XdiEntityMember fileXdiEntityMember = fileXdiEntityCollection.setXdiMemberUnordered(XdiAbstractMemberUnordered.createRandomUuidXDIArc(XdiEntityCollection.class));
+				XdiEntityInstance fileXdiEntityMember = fileXdiEntityCollection.setXdiInstanceUnordered(true, false, XDIArc.literalFromRandomUuid());
 				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralDataString(file.getName());
 				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralDataNumber(Double.valueOf(file.getTotalSpace()));
 			}
