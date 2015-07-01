@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xdi2.core.Graph;
 import xdi2.core.features.nodetypes.XdiAbstractEntity;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
@@ -13,15 +14,14 @@ import xdi2.core.features.nodetypes.XdiEntityInstance;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
 import xdi2.core.util.GraphUtil;
-import xdi2.messaging.GetOperation;
-import xdi2.messaging.MessageResult;
-import xdi2.messaging.context.ExecutionContext;
-import xdi2.messaging.exceptions.Xdi2MessagingException;
+import xdi2.messaging.operations.GetOperation;
 import xdi2.messaging.target.MessagingTarget;
 import xdi2.messaging.target.Prototype;
 import xdi2.messaging.target.contributor.AbstractContributor;
 import xdi2.messaging.target.contributor.ContributorMount;
 import xdi2.messaging.target.contributor.ContributorResult;
+import xdi2.messaging.target.exceptions.Xdi2MessagingException;
+import xdi2.messaging.target.execution.ExecutionContext;
 import xdi2.messaging.target.impl.graph.GraphMessagingTarget;
 
 @ContributorMount(contributorXDIAddresses={"(#test)"})
@@ -110,18 +110,18 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 
 		@Override
-		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsXri, XDIAddress relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
+		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsAddress, XDIAddress relativeTargetAddress, GetOperation operation, Graph operationResultGraph, ExecutionContext executionContext) throws Xdi2MessagingException {
 
-			XDIAddress fileSysContextXri = contributorAddresses[contributorAddresses.length - 2];
-			XDIAddress fileSysDirContextXri = contributorAddresses[contributorAddresses.length - 1];
+			XDIAddress fileSysContextXDIAddress = contributorAddresses[contributorAddresses.length - 2];
+			XDIAddress fileSysDirContextXDIAddress = contributorAddresses[contributorAddresses.length - 1];
 
-			log.debug("fileSysContextXri: " + fileSysContextXri + ", fileSysDirContextXri: " + fileSysDirContextXri);
+			log.debug("fileSysContextXDIAddress: " + fileSysContextXDIAddress + ", fileSysDirContextXDIAddress: " + fileSysDirContextXDIAddress);
 
 			// map the directory
 
 			File graphRootDir = new File(FileSysContributor.this.getGraphPath());
 
-			XdiEntity xdiEntity = XdiAbstractEntity.fromContextNode(messageResult.getGraph().setDeepContextNode(contributorsXri));
+			XdiEntity xdiEntity = XdiAbstractEntity.fromContextNode(operationResultGraph.setDeepContextNode(contributorsAddress));
 
 			mapDir(graphRootDir, xdiEntity);
 
@@ -140,12 +140,12 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 		}
 
 		@Override
-		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsXri, XDIAddress relativeTargetAddress, GetOperation operation, MessageResult messageResult, ExecutionContext executionContext) throws Xdi2MessagingException {
+		public ContributorResult executeGetOnAddress(XDIAddress[] contributorAddresses, XDIAddress contributorsAddress, XDIAddress relativeTargetAddress, GetOperation operation, Graph operationResultGraph, ExecutionContext executionContext) throws Xdi2MessagingException {
 
-			XDIAddress fileSysContextXri = contributorAddresses[contributorAddresses.length - 2];
-			XDIAddress fileSysDirContextXri = contributorAddresses[contributorAddresses.length - 1];
+			XDIAddress fileSysContextXDIAddress = contributorAddresses[contributorAddresses.length - 2];
+			XDIAddress fileSysDirContextXDIAddress = contributorAddresses[contributorAddresses.length - 1];
 
-			log.debug("fileSysContextXri: " + fileSysContextXri + ", fileSysDirContextXri: " + fileSysDirContextXri);
+			log.debug("fileSysContextXDIAddress: " + fileSysContextXDIAddress + ", fileSysDirContextXDIAddress: " + fileSysDirContextXDIAddress);
 
 			// parse identifiers
 
