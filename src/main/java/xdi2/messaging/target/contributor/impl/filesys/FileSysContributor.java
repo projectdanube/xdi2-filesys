@@ -171,8 +171,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": Directory: " + file.getAbsolutePath());
 
 				XdiEntityInstance dirXdiEntityMember = dirXdiEntityCollection.setXdiInstanceUnordered(true, false, XDIArc.literalFromRandomUuid());
-				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralDataString(file.getName());
-				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralDataNumber(Double.valueOf(file.getTotalSpace()));
+				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralString(file.getName());
+				dirXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
 
 				mapDir(file, dirXdiEntityMember);
 			}
@@ -182,8 +182,8 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 				if (log.isDebugEnabled()) log.debug("In " + dir.getAbsolutePath() + ": File: " + file.getAbsolutePath());
 
 				XdiEntityInstance fileXdiEntityMember = fileXdiEntityCollection.setXdiInstanceUnordered(true, false, XDIArc.literalFromRandomUuid());
-				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralDataString(file.getName());
-				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralDataNumber(Double.valueOf(file.getTotalSpace()));
+				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_NAME, true).setLiteralString(file.getName());
+				fileXdiEntityMember.getXdiAttribute(XDI_ADD_AS_SIZE, true).setLiteralNumber(Double.valueOf(file.getTotalSpace()));
 			}
 		}
 	}
