@@ -2,6 +2,7 @@ package xdi2.messaging.target.contributor.impl.filesys;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +89,7 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 		if (this.getGraphPath() == null && messagingTarget instanceof GraphMessagingTarget) {
 
-			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXDIAddress(((GraphMessagingTarget) messagingTarget).getGraph()).toString(), "UTF-8");
+			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXDIAddress(((GraphMessagingTarget) messagingTarget).getGraph()).toString(), StandardCharsets.UTF_8);
 			this.setGraphPath(this.getBasePath() + relativeGraphPath);
 		}
 
