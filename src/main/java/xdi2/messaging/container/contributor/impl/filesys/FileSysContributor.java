@@ -1,4 +1,4 @@
-package xdi2.messaging.target.contributor.impl.filesys;
+package xdi2.messaging.container.contributor.impl.filesys;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -15,14 +15,14 @@ import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
 import xdi2.core.util.GraphUtil;
 import xdi2.messaging.operations.GetOperation;
-import xdi2.messaging.target.MessagingTarget;
-import xdi2.messaging.target.Prototype;
-import xdi2.messaging.target.contributor.ContributorMount;
-import xdi2.messaging.target.contributor.ContributorResult;
-import xdi2.messaging.target.contributor.impl.AbstractContributor;
-import xdi2.messaging.target.exceptions.Xdi2MessagingException;
-import xdi2.messaging.target.execution.ExecutionContext;
-import xdi2.messaging.target.impl.graph.GraphMessagingTarget;
+import xdi2.messaging.container.MessagingContainer;
+import xdi2.messaging.container.Prototype;
+import xdi2.messaging.container.contributor.ContributorMount;
+import xdi2.messaging.container.contributor.ContributorResult;
+import xdi2.messaging.container.contributor.impl.AbstractContributor;
+import xdi2.messaging.container.exceptions.Xdi2MessagingException;
+import xdi2.messaging.container.execution.ExecutionContext;
+import xdi2.messaging.container.impl.graph.GraphMessagingContainer;
 
 @ContributorMount(contributorXDIAddresses={"(#test)"})
 public class FileSysContributor extends AbstractContributor implements Prototype<FileSysContributor> {
@@ -75,9 +75,9 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 	 */
 
 	@Override
-	public void init(MessagingTarget messagingTarget) throws Exception {
+	public void init(MessagingContainer messagingContainer) throws Exception {
 
-		super.init(messagingTarget);
+		super.init(messagingContainer);
 
 		// determine base path
 
@@ -86,9 +86,9 @@ public class FileSysContributor extends AbstractContributor implements Prototype
 
 		// determine graph path
 
-		if (this.getGraphPath() == null && messagingTarget instanceof GraphMessagingTarget) {
+		if (this.getGraphPath() == null && messagingContainer instanceof GraphMessagingContainer) {
 
-			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXDIAddress(((GraphMessagingTarget) messagingTarget).getGraph()).toString(), "UTF-8");
+			String relativeGraphPath = URLEncoder.encode(GraphUtil.getOwnerXDIAddress(((GraphMessagingContainer) messagingContainer).getGraph()).toString(), "UTF-8");
 			this.setGraphPath(this.getBasePath() + relativeGraphPath);
 		}
 
